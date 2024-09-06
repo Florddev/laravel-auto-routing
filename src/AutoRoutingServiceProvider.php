@@ -17,7 +17,7 @@ class AutoRoutingServiceProvider extends ServiceProvider
     public function boot()
     {
         Route::macro('auto', function ($prefix, $controller, $options = []) {
-            return $this->app->make(AutoRoute::class)->register($prefix, $controller, $options);
+            return app(AutoRoute::class)->register($prefix, $controller, $options);
         });
     }
 }

@@ -59,7 +59,12 @@ class AutoRoute
         $baseUrl = $httpMethodAttribute?->url ?? $this->convertToKebabCase($method->getName());
         $name = $httpMethodAttribute?->name ?? $this->generateRouteName($controllerName, $method->getName());
 
-        $url = $this->buildUrlWithParameters($baseUrl, $method);
+        // Traitement spécial pour la méthode 'index'
+        if ($method->getName() === 'index' && !$httpMethodAttribute?->url) {
+            $url = '';
+        } else {
+            $url = $this->buildUrlWithParameters($baseUrl, $method);
+        }
 
         $route = Route::{$httpMethod}($url, [$controller, $method->getName()]);
         $route->name($name);
