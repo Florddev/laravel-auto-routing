@@ -1,0 +1,55 @@
+<?php
+
+namespace {{ namespace }};
+
+use {{ rootNamespace }}Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Florddev\LaravelAutoRouting\Attributes\HttpGet;
+use Florddev\LaravelAutoRouting\Attributes\HttpPost;
+use Florddev\LaravelAutoRouting\Attributes\HttpPut;
+use Florddev\LaravelAutoRouting\Attributes\HttpDelete;
+
+class {{ class }} extends Controller
+{
+    #[HttpGet]
+    public function index()
+    {
+        //
+    }
+
+    #[HttpGet]
+    public function create()
+    {
+        //
+    }
+
+    #[HttpPost]
+    public function store(Request $request)
+    {
+        //
+    }
+
+    #[HttpGet]
+    public function show($id)
+    {
+        //
+    }
+
+    #[HttpGet]
+    public function edit($id)
+    {
+        //
+    }
+
+    #[HttpPut]
+    public function update(Request $request, $id)
+    {
+        //
+    }
+
+    #[HttpDelete]
+    public function destroy($id)
+    {
+        //
+    }
+}

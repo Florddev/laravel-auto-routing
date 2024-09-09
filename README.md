@@ -155,6 +155,28 @@ Route::auto('/support', \App\Http\Controllers\SupportController::class, [
 ]);
 ```
 
+## Creating Auto-Routed Controllers
+
+You can create a new controller with auto-routing methods using the following Artisan command:
+
+```bash
+php artisan make:controller UserController --auto
+```
+
+This will generate a new controller with basic CRUD methods already set up with the appropriate auto-routing attributes.
+
+If you want to create a resource controller with all resource methods and auto-routing, use both the `--resource` and `--auto` options:
+
+```bash
+php artisan make:controller UserController --auto --resource
+```
+
+After creating the controller, don't forget to register it in your routes file:
+
+```php
+Route::auto('/users', \App\Http\Controllers\UserController::class);
+```
+
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.

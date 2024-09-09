@@ -7,8 +7,14 @@ use Illuminate\Support\Facades\Route;
 
 class AutoRoutingServiceProvider extends ServiceProvider
 {
+    protected $commands = [
+        'Florddev\LaravelAutoRouting\Console\ExtendedControllerMakeCommand',
+    ];
+
     public function register()
     {
+        $this->commands($this->commands);
+
         $this->app->singleton(AutoRoute::class, function ($app) {
             return new AutoRoute();
         });
