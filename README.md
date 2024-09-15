@@ -177,10 +177,12 @@ This will generate routes for all controllers in the `/app/Http/Controllers` dir
 When auto-routing a directory, you can exclude specific controllers or subdirectories:
 
 ```php
-Route::auto('/', app_path('Http/Controllers'))->except(['/Api', 'ProfileController']);
+Route::auto('/', app_path('Http/Controllers'), [
+    'except' => ['/Api', 'ProfileController']
+]);
 ```
 
-This will generate routes for all controllers in the `/app/Http/Controllers` directory, except for the `ProfileController` and any controllers in the `Api` subdirectory.
+This will generate routes for all controllers in the `/app/Http/Controllers` directory, except for `ProfileController` and any controllers in the `Api` subdirectory.
 
 
 ## Creating Auto-Routed Controllers
