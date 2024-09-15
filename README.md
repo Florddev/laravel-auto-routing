@@ -11,6 +11,9 @@ Laravel Auto Routing is a package that simplifies route creation in your Laravel
 - Automatic route naming based on controller and method names
 - Compatibility with Laravel's existing routing features (middlewares, prefixes, etc.)
 - Seamless integration with Laravel's route groups
+- Controller-level route configuration using attributes
+- Flexible attribute options for both controller and method levels
+- Ability to auto route a directory and exclude specific controllers or directories from auto-routing
 
 ## Requirements
 
@@ -97,9 +100,25 @@ Route::auto('/admin/users', \App\Http\Controllers\Admin\UserController::class, [
 ]);
 ```
 
-### Custom URL and Route Names
+### Optional Parameters
 
-You can customize URLs and route names using attribute parameters:
+The package automatically handles optional parameters:
+
+```php
+use Florddev\LaravelAutoRouting\Attributes\HttpGet;
+
+class ApiController extends Controller
+{
+    #[HttpGet]
+    public function search(string $query, int $page = 1, string $sort = 'desc') { /* ... */ }
+}
+```
+
+This will generate a route: `GET /api/search/{query}/{page?}/{sort?}`
+
+### Method-Level Route Configuration
+
+You can customize any valid Laravel route option using attribute parameters:
 
 ```php
 use Florddev\LaravelAutoRouting\Attributes\HttpGet;
@@ -118,21 +137,21 @@ class BlogController extends Controller
 }
 ```
 
-### Optional Parameters
+### Controller-Level Route Configuration
 
-The package automatically handles optional parameters:
+You can now use the `ControllerRoute` attribute to configure routes at the controller level:
 
 ```php
-use Florddev\LaravelAutoRouting\Attributes\HttpGet;
+use Florddev\LaravelAutoRouting\Attributes\ControllerRoute;
 
-class ApiController extends Controller
+#[ControllerRoute(prefix: 'admin', name: 'admin.', middleware: ['auth', 'admin'])]
+class AdminController extends Controller
 {
-    #[HttpGet]
-    public function search(string $query, int $page = 1, string $sort = 'desc') { /* ... */ }
+    // ... controller methods
 }
 ```
 
-This will generate a route: `GET /api/search/{query}/{page?}/{sort?}`
+This will apply any valid Laravel route option as an attribute parameter in the controller.
 
 ### Using with Laravel Route Groups
 
@@ -145,15 +164,24 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 });
 ```
 
-### Subdomain Routing
+### Auto-routing a directory
 
-You can use Auto Routing with subdomains:
+You can generate routes for all controllers in a specific directory:
 
 ```php
-Route::auto('/support', \App\Http\Controllers\SupportController::class, [
-    'domain' => 'help.example.com',
-]);
+Route::auto('/', app_path('Http/Controllers'));
 ```
+
+This will generate routes for all controllers in the `/app/Http/Controllers` directory.
+
+When auto-routing a directory, you can exclude specific controllers or subdirectories:
+
+```php
+Route::auto('/', app_path('Http/Controllers'))->except(['/Api', 'ProfileController']);
+```
+
+This will generate routes for all controllers in the `/app/Http/Controllers` directory, except for the `ProfileController` and any controllers in the `Api` subdirectory.
+
 
 ## Creating Auto-Routed Controllers
 
