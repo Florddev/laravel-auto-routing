@@ -2,6 +2,7 @@
 
 namespace Florddev\LaravelAutoRouting;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use ReflectionClass;
@@ -23,6 +24,7 @@ class AutoRoute
     protected $exceptions = [];
     protected $baseDirectory;
     protected $initalOptions = [];
+    protected $isDirectoryRouting = false;
 
     public function register($prefix, $controllerOrDirectory, $options = [])
     {
@@ -51,6 +53,7 @@ class AutoRoute
 
     protected function registerDirectory($prefix, $directory, $options)
     {
+        $this->isDirectoryRouting = true;
         $baseNamespace = $this->getNamespaceFromDirectory($directory);
         $finder = new Finder();
         $finder->files()->in($directory)->name('*Controller.php');
@@ -173,7 +176,7 @@ class AutoRoute
         }
 
         // Si aucun préfixe personnalisé n'a été défini, utiliser le nom du contrôleur
-        if (!$hasCustomPrefix) {
+        if (!$hasCustomPrefix && $this->isDirectoryRouting) {
             $controllerPrefix = $this->convertToKebabCase($controllerName);
             $groupAttributes['prefix'] = ($groupAttributes['prefix'] ?? '') . '/' . $controllerPrefix;
         }
@@ -260,6 +263,11 @@ class AutoRoute
     protected function buildUrlWithParameters($baseUrl, ReflectionMethod $method)
     {
         $parameters = $method->getParameters();
+
+        foreach ($parameters as $key=>$param){
+            if($param->getType() == Request::class) unset($parameters[$key]);
+        }
+
         $parameterString = $this->buildParameterString($parameters);
         return trim($baseUrl . '/' . $parameterString, '/');
     }
