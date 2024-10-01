@@ -8,6 +8,17 @@
             "Florddev\\LaravelAutoRouting\\": "src/"
         }
     },
+    "keywords": [
+        "laravel",
+        "web-development",
+        "routing", 
+        "laravel-package",
+        "backend-development",
+        "route-generation",
+        "php8-attributes",
+        "auto-routing",
+        "controller-based-routing"
+    ],
     "authors": [
         {
             "name": "Florddev",
